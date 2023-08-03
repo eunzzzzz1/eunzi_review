@@ -20,19 +20,19 @@ public interface CommonDAO {
 	public int deleteData(String id, Map<String, Object> map) throws SQLException;
 	
 	// 숫자 데이터 한 개 가져오기
-	public int getIntData(String id) throws SQLException;
-	public int getIntData(String id, Object value) throws SQLException;
-	public int getIntData(String id, Map<String,Object> map) throws SQLException;
+	public int getIntData(String id);
+	public int getIntData(String id, Object value);
+	public int getIntData(String id, Map<String,Object> map);
 	
 	// 데이터 한 행 가져오기
-	public Object getReadData(String id) throws SQLException;
-	public Object getReadData(String id, Object value) throws SQLException;
-	public Object getReadData(String id, Map<String,Object> map) throws SQLException;
+	public Object getReadData(String id);
+	public Object getReadData(String id, Object value);
+	public Object getReadData(String id, Map<String,Object> map);
 	
 	
 	// 데이터 전체 행 가져오기
-	public List<Object> getListData(String id) throws SQLException;
-	public List<Object> getListData(String id, Object value) throws SQLException;
-	public List<Object> getListData(String id, Map<String,Object> map) throws SQLException;
+	public List<Object> getListData(String id);
+	public List<Object> getListData(String id, Object value);
+	public List<Object> getListData(String id, Map<String,Object> map);
 	
 }
