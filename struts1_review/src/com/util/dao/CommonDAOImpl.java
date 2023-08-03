@@ -32,7 +32,7 @@ public class CommonDAOImpl implements CommonDAO{
 		try {
 			sqlMap.startTransaction(); // 트랜젝션 시작
 			sqlMap.insert(id, value); // insert
-			sqlMap.commitTransaction(); // 커밋
+			sqlMap.commitTransaction(); // 커밋하기
 		} catch (Exception e) {
 			System.out.println("[insertData의 에러] " + e);
 		} finally {
