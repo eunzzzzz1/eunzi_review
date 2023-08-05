@@ -3,6 +3,18 @@
 PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="fileReview">
+<sqlMap namespace="fileRe">
+
+<!-- num의 최대값을 들고오는 쿼리 -->
+<select id="maxNum" resultClass="int">
+	select nvl(max(num),0) from fileTestReview
+</select>
+
+<!-- 파일 인서트 쿼리 -->
+	<insert id="insertFile" parameterClass="com.file.FileForm">
+		insert into fileTestReview
+		(num, subject, saveFileName, originalFileName)
+		values (#num#, #subject#, #saveFileName#, #originalFileName#)
+	</insert>
 
 </sqlMap>

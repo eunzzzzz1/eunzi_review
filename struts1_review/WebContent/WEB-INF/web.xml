@@ -10,6 +10,21 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+  <!-- 필터 -->
+  <filter>
+	<filter-name>charFilter</filter-name>
+	<filter-class>com.filter.EncodingFilter</filter-class>
+	<init-param>
+		<param-name>charset</param-name>
+		<param-value>UTF-8</param-value>
+	</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>charFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+  
   <!-- Struts 환경 세팅하기 -->
 	
 	<servlet>
@@ -18,7 +33,7 @@
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				/WEB-INF/struts-config.xml
+				/WEB-INF/struts-config.xml,
 				/WEB-INF/struts-config_file.xml
 			</param-value>
 		</init-param>

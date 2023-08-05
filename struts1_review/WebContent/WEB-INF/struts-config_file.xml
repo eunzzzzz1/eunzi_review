@@ -10,11 +10,11 @@
 	</form-beans>
 
 	<action-mappings>
-		<action path="/fileReview" type="com.file.FileAction" name="fileForm"
+		<action path="/reFile" type="com.file.FileAction" name="fileForm"
 			scope="request" parameter="method">
-		
-		
-		
+		<forward name="upload" path="/fileReview/write.jsp"/>
+		<forward name="uploading" redirect="true" path="/reFile.do?method=filelist"/>
+		<forward name="filelist" path="/fileReview/list.jsp"/>
 		</action>
 	</action-mappings>
 
