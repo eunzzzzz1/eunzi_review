@@ -16,5 +16,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		(num, subject, saveFileName, originalFileName)
 		values (#num#, #subject#, #saveFileName#, #originalFileName#)
 	</insert>
+	
+<!-- 전체 데이터 가져오기 -->
+	<select id="fileList" resultClass="com.file.FileForm" parameterClass="map">
+	
+	
+	
+	</select>
 
 </sqlMap>
