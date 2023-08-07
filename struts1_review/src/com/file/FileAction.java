@@ -90,6 +90,23 @@ public class FileAction extends DispatchAction{
 	public ActionForward filelist(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse resp)
 			throws Exception {
 		
+		CommonDAO dao = CommonDAOImpl.getInstance();
+		/**----------------------------------------
+		 * 순서 정리
+		 * ----------------------------------------
+		 * 1. 페이징 처리
+		 * 2. 리스트 뽑기
+		 * 
+		 */
+		
+		// 페이징처리부터 해야 start와 end를 뽑아 list를 처리할 수 있다.
+		
+		
+		
+		
+		
+		
+		
 		return mapping.findForward("filelist");
 	}
 
