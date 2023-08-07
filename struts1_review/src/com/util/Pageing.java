@@ -1,6 +1,6 @@
 package com.util;
 
-public class Paging {
+public class Pageing {
 	/**
 	 * 페이징 처리를 위한 객체 
 	 * 메소드 1) 전체 페이지를 구하는 메소드 getPageCount

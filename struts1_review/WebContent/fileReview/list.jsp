@@ -26,19 +26,24 @@
 	<td style="border-bottom: 1px solid #000000; width: 200px;">파일명</td>
 	<td style="border-bottom: 1px solid #000000;">삭제</td>
 </tr>
+<c:forEach var="dto" items="${lists }">
 <tr>
-	<td align="center">1</td>
-	<td width="150">안녕하세요</td>
-	<td width="200"><a href="">파일명.jpg</a></td>
-	<td align="center"><a href="">삭제하기</a></td>
+	<td align="center">${dto.listNum }</td>
+	<td width="150">${dto.subject }</td>
+	<td width="200"><a href="${dto.fileDownloadUrl }">${dto.originalFileName }</a></td>
+	<td align="center"><a href="<%=cp %>/reFile.do?method=delete&num=${dto.num}">삭제하기</a></td>
 </tr>
-<tr>
-	<td align="center">1</td>
-	<td width="150">안녕하세요</td>
-	<td width="200"><a href="">파일명.jpg</a></td>
-	<td align="center"><a href="">삭제하기</a></td>
-</tr>
+</c:forEach>
 
+</table>
+
+<table>
+	<c:if test="${dataCount!=0 }">
+	<tr><td> ${pageIndexList } </td></tr>
+	</c:if>
+	<c:if test="${dataCount==0 }">
+	<tr><td> 등록된 데이터가 없습니다. </td></tr>
+	</c:if>
 </table>
 
 </td></tr>

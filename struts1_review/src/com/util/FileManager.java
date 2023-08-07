@@ -108,7 +108,7 @@ public class FileManager {
 			originalFileName = saveFileName;
 		}
 		
-		originalFileName = new String(originalFileName.getBytes("euc-kr"),"UTF-8");
+		originalFileName = new String(originalFileName.getBytes("euc-kr"),"ISO-8859-1");
 		
 		
 		// 파일 객체 생성하기
@@ -119,7 +119,7 @@ public class FileManager {
 		
 		// 파일 세팅해주기
 		resp.setContentType("application/octet-stream");
-		resp.setHeader("Content-dispositon", "attachment;fileName=" + originalFileName);
+		resp.setHeader("Content-disposition", "attachment;fileName=" + originalFileName);
 		
 		// 파일 내려주기
 		BufferedInputStream bis = new BufferedInputStream(

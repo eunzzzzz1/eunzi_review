@@ -17,6 +17,11 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		values (#num#, #subject#, #saveFileName#, #originalFileName#)
 	</insert>
 	
+<!-- 전체 데이터의 개수를 구하는 쿼리 -->
+	<select id="dataCount" resultClass="int">
+		select nvl(count(*),0) from fileTestReview
+	</select>
+	
 <!-- 전체 데이터 가져오기 -->
 	<select id="fileList" resultClass="com.file.FileForm" parameterClass="map">
 		select * from(
@@ -24,6 +29,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select num, subject, saveFileName, originalFileName
 		from fileTestReview order by num desc) data)
 	<![CDATA[where rnum>=#start# and rnum<=#end#]]>
+	</select>
+	
+<!-- 데이터 한 개 가져오기 -->
+	<select id="fileData" resultClass="com.file.FileForm" parameterClass="int">
+		select num, subject, saveFileName, originalFileName
+		from fileTestReview where num = #num#
 	</select>
 
 </sqlMap>
