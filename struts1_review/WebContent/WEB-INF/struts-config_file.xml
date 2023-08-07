@@ -15,6 +15,7 @@
 		<forward name="upload" path="/fileReview/write.jsp"/>
 		<forward name="uploading" redirect="true" path="/reFile.do?method=filelist"/>
 		<forward name="filelist" path="/fileReview/list.jsp"/>
+		<forward name="deleted" redirect="true" path="/reFile.do?method=filelist"/>
 		</action>
 	</action-mappings>
 

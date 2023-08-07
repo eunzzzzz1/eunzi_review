@@ -36,5 +36,13 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select num, subject, saveFileName, originalFileName
 		from fileTestReview where num = #num#
 	</select>
+	
+	
+<!-- 데이터 삭제하기 -->
+	<delete id="fileDelete" parameterClass="int" >
+		delete fileTestReview where num=#num#
+	</delete>
+
+
 
 </sqlMap>

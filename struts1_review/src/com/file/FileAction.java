@@ -254,7 +254,26 @@ public class FileAction extends DispatchAction{
 	public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse resp)
 			throws Exception {
 		
-		return mapping.findForward("");
+		CommonDAO dao = CommonDAOImpl.getInstance();
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		
+		// 데이터 하나 읽어와서 파일부터 삭제 진행
+		FileForm fileForm = (FileForm)dao.getReadData("fileRe.fileData", num);
+		
+		// 파일이 저장된 path
+		HttpSession session = req.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "pds" + File.separator + "saveFileRe";
+		
+		// 파일 삭제
+		FileManager.doFileDelete(fileForm.getSaveFileName(), path);
+		
+		
+		// DB삭제
+		dao.deleteData("fileRe.fileDelete", num);
+		
+		return mapping.findForward("deleted");
 	}
 	
 }

@@ -148,6 +148,26 @@ public class FileManager {
 		
 		return true;
 	}
+	
+	public static void doFileDelete(String fileName, String path) {
+		
+		try {
+			
+			String filePath = path + File.separator + fileName;
+			
+			File file = new File(filePath);
+			
+			if(file.exists()) {
+				file.delete();
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("[ FileManager doFileDelete의 에러 ]" + e);
+		}
+		
+		
+	}
 
 
 	
