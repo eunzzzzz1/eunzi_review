@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="bbs">
+
+	<typeAlias alias="dto" type="com.bbs.BoardCommand"/>
+
+	<select id="numMax" resultClass="int">
+		select nvl(max(num),0) from board
+	</select>
+	
+	<insert id="insertData" parameterClass="dto">
+		insert into board (num, name, pwd, email, subject, content, ipAddr, hitCount, created)
+		values (#num#, #name#, #pwd#, #email#, #subject#, #content#, #ipAddr#, 0, sysdate)
+	</insert>
+	
+	<!-- 전체 데이터 개수 구하기 -->
+	<select id="dataCount" resultClass="int" parameterClass="map">
+		select nvl(count(num),0) from board
+		where $searchKey$ like '%' || #searchValue# || '%'
+	</select>
+	
+	<select id="listData" resultClass="dto" parameterClass="map">
+		select * from(
+		select rownum rnum, data.* from (
+			select num,name,subject,hitCount,to_char(created,'YYYY-MM-DD') created
+			from board
+			where $searchKey$ like '%' || #searchValue# || '%'
+			order by num desc
+		) data)
+		<![CDATA[where rnum>=#start# and rnum<=#end#]]>
+	</select>
+
+</sqlMap>

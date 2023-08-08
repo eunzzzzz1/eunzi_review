@@ -4,24 +4,45 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.stereotype.Repository;
+
 import com.ibatis.sqlmap.client.SqlMapClient;
-//import com.util.sqlMap.sqlMapConfig;
 
+
+
+@Repository("dao")
 public class CommonDAOImpl implements CommonDAO{
-
-	// 의존성 주입
-	private SqlMapClient sqlMap; // 얘가 필수
 	
-	public CommonDAOImpl() {
-		//this.sqlMap = sqlMapConfig.getSqlMapInstance();// sqlMap 호출
-		// 객체만 생성하면 자동적으로 호출되게 된다.
-	}
+	/**------------------------------------------------------------------------------------
+	 * Spring의 CommonDAOImpl
+	 * ------------------------------------------------------------------------------------
+	 * 1. Spring이 객체를 생성해주기 때문에 getInstance()로 객체를 생성해줄 필요가 없다.
+	 * 		=> 즉, getInstance() 메소드가 필요없다.
+	 * 
+	 * 2. 객체 생성을 Spring의 어노테이션이 하기 때문에, 생성자가 따로 필요하지 않다.
+	 * 
+	 * 3. SqlMapClient의 객체가 아닌 SqlMapClientTemplate의 객체가 필요하다.
+	 * 	  즉, private SqlMapClientTemplate sqlMapClientTemplate를 선언하고 의존성을 주입해 주어야한다.
+	 * 	  이를 struts1, 2에서는 생성자를 통해 초기화 시켜주었는데,
+	 * 	  Spring에서는 생성자를 쓰지 않기 때문에 다른 방법으로 의존성을 주입시켜주어야한다.
+	 * 	  
+	 *    * SqlMapClientTemplate 객체는
+	 *    	'sqlMapClientTemplate' 라는 이름으로 applicationContext.xml에서 생성해주었다.
+	 * 
+	 * 		3-1 ) 메소드로 의존성 주입 시켜주기
+	 * 			public void setSqlMapClientTemplate (SqlMapClientTemplate sqlMapClientTemplate) {
+				this.sqlMapClientTemplate = sqlMapClientTemplate;
+				}
+	 * 
+	 * 		3-2) 어노테이션으로 자동으로 의존성주입 시켜주기
+	 * 			SqlMapClientTemplate 타입 변수에 @Autowired 를 사용하면 된다.
+	 * ------------------------------------------------------------------------------------
+	 */
 	
-	public static CommonDAO getInstance() {
-		return new CommonDAOImpl();
-		// 외부에서 getInstance를 호출
-		// CommonDAO dao = new CommondDAOImpl(); 이렇게 호출할 수 있게 된다.
-	}
+	@Autowired
+	private SqlMapClientTemplate sqlMapClientTemplate;
 	
 	
 	@Override
@@ -29,18 +50,21 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			sqlMap.startTransaction();
-				// 트렌젝션 시작. 
-			sqlMap.insert(id,value); // 실제 인서트 문에 사람들에게 받은 id,value를 넘기고
-			sqlMap.commitTransaction(); // 커밋
-			//xml에서 transactionManager 부분에서 commit을 하도록 하지 않았기 때문에(false) 커밋을 해줘야한다.
+			/**------------------------------------------------------------------------------------
+			 * Spring의 트랜잭션 처리
+			 * ------------------------------------------------------------------------------------
+			 * 트랜잭션 처리는 applicationContext.xml의 transactionManager객체가 해주기 때문에
+			 * sqlMap.startTransaction();과 sqlMap.commitTransaction();,
+			 * 그리고 finally 절의 sqlMap.endTransaction();이 필요하지 않다.
+			 * ------------------------------------------------------------------------------------
+			 */
+
+			sqlMapClientTemplate.insert(id,value);
+			
 			
 		} catch (Exception e) {
 			System.out.println("insertData의 에러 : " + e);
-		} finally {
-			sqlMap.endTransaction(); //트랜젝션 해줬으면 끝내줘야한다.
-			//iBatis는 이런 세팅을 일일히 해줘야함
-			//이렇게 한 번 만들어두고 매 프로젝트마다 복사해서 써주면 된다.
+			
 		}
 		
 	}
@@ -51,17 +75,13 @@ public class CommonDAOImpl implements CommonDAO{
 		int result = 0;
 		
 		try {
-			sqlMap.startTransaction();
-			// 트렌젝션 시작. 
-			result = sqlMap.update(id,value); // 실제 인서트 문에 사람들에게 받은 id,value를 넘기고
-			//update는 반환값이 있다.
-			sqlMap.commitTransaction(); // 커밋
-		//xml에서 transactionManager 부분에서 commit을 하도록 하지 않았기 때문에(false) 커밋을 해줘야한다.
+
+			result = sqlMapClientTemplate.update(id,value);
+			
 		} catch (Exception e) {
 			System.out.println("updateData의 에러 : " + e);
-		} finally {
-			 sqlMap.endTransaction();
 		}
+		
 		return result;
 	}
 
@@ -71,16 +91,11 @@ public class CommonDAOImpl implements CommonDAO{
 		int result = 0;
 		
 		try {
-			sqlMap.startTransaction();
-			// 트렌젝션 시작. 
-			result = sqlMap.update(id,map); // 실제 인서트 문에 사람들에게 받은 id,value를 넘기고
-			//update는 반환값이 있다.
-			sqlMap.commitTransaction(); // 커밋
-			//xml에서 transactionManager 부분에서 commit을 하도록 하지 않았기 때문에(false) 커밋을 해줘야한다.
+	
+			result = sqlMapClientTemplate.update(id,map); 
+			
 		} catch (Exception e) {
 			System.out.println("updateData의 에러 : " + e);
-		} finally {
-			 sqlMap.endTransaction();
 		}
 		
 		return result;
@@ -92,16 +107,11 @@ public class CommonDAOImpl implements CommonDAO{
 		int result = 0;
 		
 		try {
-			sqlMap.startTransaction();
-			// 트렌젝션 시작. 
-			result = sqlMap.delete(id); // 실제 인서트 문에 사람들에게 받은 id,value를 넘기고
-			//update는 반환값이 있다.
-			sqlMap.commitTransaction(); // 커밋
-			//xml에서 transactionManager 부분에서 commit을 하도록 하지 않았기 때문에(false) 커밋을 해줘야한다.
+			
+			result = sqlMapClientTemplate.delete(id); 
+			
 		} catch (Exception e) {
 			System.out.println("deleteData의 에러 : " + e);
-		} finally {
-			 sqlMap.endTransaction();
 		}
 		
 		return result;
@@ -113,18 +123,12 @@ public class CommonDAOImpl implements CommonDAO{
 		int result = 0;
 		
 		try {
-			sqlMap.startTransaction();
-			// 트렌젝션 시작. 
-			result = sqlMap.delete(id,value); // 실제 인서트 문에 사람들에게 받은 id,value를 넘기고
-			//update는 반환값이 있다.
-			sqlMap.commitTransaction(); // 커밋
-			//xml에서 transactionManager 부분에서 commit을 하도록 하지 않았기 때문에(false) 커밋을 해줘야한다.
+			
+			result = sqlMapClientTemplate.delete(id,value);
+			
 		} catch (Exception e) {
 			System.out.println("deleteData의 에러 : " + e);
-		} finally {
-			 sqlMap.endTransaction();
-		}
-		
+		} 
 		return result;
 	}
 
@@ -134,17 +138,13 @@ public class CommonDAOImpl implements CommonDAO{
 		int result = 0;
 		
 		try {
-			sqlMap.startTransaction();
-			// 트렌젝션 시작. 
-			result = sqlMap.delete(id,map); // 실제 인서트 문에 사람들에게 받은 id,value를 넘기고
-			//update는 반환값이 있다.
-			sqlMap.commitTransaction(); // 커밋
-			//xml에서 transactionManager 부분에서 commit을 하도록 하지 않았기 때문에(false) 커밋을 해줘야한다.
+			
+
+			result = sqlMapClientTemplate.delete(id,map); 
+			
 		} catch (Exception e) {
 			System.out.println("deleteData의 에러 : " + e);
-		} finally {
-			 sqlMap.endTransaction();
-		}
+		} 
 		
 		return result;
 	}
@@ -155,7 +155,7 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return sqlMap.queryForObject(id);
+			return sqlMapClientTemplate.queryForObject(id);
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -170,7 +170,7 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return sqlMap.queryForObject(id,value);
+			return sqlMapClientTemplate.queryForObject(id,value);
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -185,7 +185,7 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return sqlMap.queryForObject(id,map);
+			return sqlMapClientTemplate.queryForObject(id,map);
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -200,8 +200,7 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return ((Integer)sqlMap.queryForObject(id)).intValue();
-			// 쿼리의 int 값을 반환
+			return ((Integer)sqlMapClientTemplate.queryForObject(id)).intValue();
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -215,8 +214,8 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return ((Integer)sqlMap.queryForObject(id,value)).intValue();
-			// 쿼리의 int 값을 반환
+			return ((Integer)sqlMapClientTemplate.queryForObject(id,value)).intValue();
+
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -230,8 +229,8 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return ((Integer)sqlMap.queryForObject(id,map)).intValue();
-			// 쿼리의 int 값을 반환
+			return ((Integer)sqlMapClientTemplate.queryForObject(id,map)).intValue();
+
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -246,8 +245,8 @@ public class CommonDAOImpl implements CommonDAO{
 			
 		try {
 			
-			return (List<Object>)sqlMap.queryForList(id);
-			// 쿼리의 int 값을 반환
+			return (List<Object>)sqlMapClientTemplate.queryForList(id);
+
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -262,8 +261,8 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return (List<Object>)sqlMap.queryForList(id,value);
-			// 쿼리의 int 값을 반환
+			return (List<Object>)sqlMapClientTemplate.queryForList(id,value);
+
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
@@ -278,8 +277,8 @@ public class CommonDAOImpl implements CommonDAO{
 		
 		try {
 			
-			return (List<Object>)sqlMap.queryForList(id,map);
-			// 쿼리의 int 값을 반환
+			return (List<Object>)sqlMapClientTemplate.queryForList(id,map);
+
 			
 		} catch (Exception e) {
 			System.out.println("getReadData의 에러 : " + e);
