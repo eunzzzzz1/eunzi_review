@@ -10,7 +10,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/" /> 
+    <property name="suffix" value=".jsp" /> 
+</bean>
 
 <!-- 어노테이션을 사용할 패키지 설정하기 -->
 <context:component-scan base-package="*"></context:component-scan>
@@ -40,11 +43,8 @@
  
  
 <!-- Resolver -->
-<!-- 
-<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="prefix" value="/" /> 
-    <property name="suffix" value=".jsp" /> 
-</bean> -->
+
+
 
 <!-- BeanNameUrlHandlerMapping -->
 
