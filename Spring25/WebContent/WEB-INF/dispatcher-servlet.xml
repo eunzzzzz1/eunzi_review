@@ -3,39 +3,99 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
+
+
+<!-- 어노테이션을 사용할 패키지 설정하기 -->
+<context:component-scan base-package="*"></context:component-scan>
+
+
+<!-- 어노테이션 설정 -->
+<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"
+	p:alwaysUseFullPath="true">
+	<property name="order" value="1"/>
+</bean>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<!-- Resolver -->
+<!-- 
 <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="prefix" value="/" /> 
     <property name="suffix" value=".jsp" /> 
-</bean>
+</bean> -->
 
 <!-- BeanNameUrlHandlerMapping -->
 
+<!--
 <bean id="beanNameUrlMapping"
 	class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
-<bean name="/test/msg.action" class="com.test.TestController"/>
+<bean name="/test/msg.action" class="com.test.TestController"/>-->
 
 <!-- SimpleUrlHandlerMapping -->
+
+<!--
 <bean id="beanSimpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-	<property name="order" value="1"/>
+	<property name="order" value="2"/>
 	<property name="alwaysUseFullPath" value="true"/>
 	<property name="mappings">
 		<props>
 			<prop key="/test/write.action">listFormController</prop>	
 			<prop key="/test/write_ok.action">listController</prop>	
-			<prop key="/test1/login.action">loginController</prop>	
+			<prop key="/test1/login.action">loginController</prop>
+			<prop key="/test2/mem.action">memController</prop>	
+			<prop key="/multi/*.action">multiTestController</prop>
 		</props>
+	</property>
+</bean>
+
+
+<bean id="propsResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+	<property name="mappings">
+		<props>
+			<prop key="/multi/list.action">list</prop>
+			<prop key="/multi/view.action">view</prop>
+		</props>
+	</property>
+</bean>
+
+<bean name="multiTestController" class="com.test3.MultiTestController">
+	<property name="methodNameResolver" ref="propsResolver"/>
+</bean>
+
+<bean name="memController" class="com.test2.MemController">
+	<property name="pages">
+		<list>
+			<value>test2/mem1</value>
+			<value>test2/mem2</value>
+			<value>test2/mem3</value>
+		</list>
 	</property>
 </bean>
 
 <bean name="listFormController" class="com.test.ListFormController"/>
 <bean name="listController" class="com.test.ListController"/>
-
 
 <bean name="authen-ref" class="com.test1.LoginAuthenticatorImpl"/>
 <bean name="loginController" class="com.test1.LoginController">
@@ -44,8 +104,7 @@
 	<property name="commandName" value="loginCommand"/>
 	<property name="formView" value="test1/login"/>
 </bean>
-
-
+-->
 
 
 
