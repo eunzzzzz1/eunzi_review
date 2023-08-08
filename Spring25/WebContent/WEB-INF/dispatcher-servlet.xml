@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/" /> 
+    <property name="suffix" value=".jsp" /> 
+</bean>
+
+<!-- BeanNameUrlHandlerMapping -->
+
+<bean id="beanNameUrlMapping"
+	class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+<bean name="/test/msg.action" class="com.test.TestController"/>
+
+<!-- SimpleUrlHandlerMapping -->
+<bean id="beanSimpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<property name="order" value="1"/>
+	<property name="alwaysUseFullPath" value="true"/>
+	<property name="mappings">
+		<props>
+			<prop key="/test/write.action">listFormController</prop>	
+			<prop key="/test/write_ok.action">listController</prop>	
+			<prop key="/test1/login.action">loginController</prop>	
+		</props>
+	</property>
+</bean>
+
+<bean name="listFormController" class="com.test.ListFormController"/>
+<bean name="listController" class="com.test.ListController"/>
+
+
+<bean name="authen-ref" class="com.test1.LoginAuthenticatorImpl"/>
+<bean name="loginController" class="com.test1.LoginController">
+	<property name="authenticator" ref="authen-ref"/>
+	<property name="commandClass" value="com.test1.LoginCommand"/>
+	<property name="commandName" value="loginCommand"/>
+	<property name="formView" value="test1/login"/>
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</beans>
