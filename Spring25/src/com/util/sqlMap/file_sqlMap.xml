@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="fileTest">
+
+	<typeAlias alias="fileDTO" type="com.file.FileCommand"/>
+	
+	<!-- maxNum 구하기 -->
+	<select id="maxNum" resultClass="int">
+		select nvl(max(num),0) from fileTest
+	</select>
+	
+	<!-- insert문 -->
+	<insert id="uploadData" parameterClass="fileDTO">
+		insert into fileTest (num, subject, originalFileName, saveFileName)
+		values (#num#, #subject#, #originalFileName#, #saveFileName#)
+	</insert>
+	
+	<!-- 데이터 개수 -->
+	
+	<select id="dataCount" resultClass="int">
+		select nvl(count(*),0) from fileTest
+	</select>
+	
+	<!-- select문 -->
+	<select id="listData" resultClass="fileDTO" parameterClass="map">
+		select * from
+			(select rownum rnum, data.* from
+				(select num, subject, originalFileName, saveFileName from fileTest order by num desc)
+			data)
+	<![CDATA[where rnum>=#start# and rnum<=#end#]]>
+	</select>
+
+
+</sqlMap>
