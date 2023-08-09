@@ -10,6 +10,24 @@
 <link rel="stylesheet" type="text/css" href="<%=cp %>/board/css/style.css"/>
 <link rel="stylesheet" type="text/css" href="<%=cp %>/board/css/article.css"/>
 
+<script type="text/javascript">
+	
+	function updateData() {
+		var params = "?num=" + ${dto.num} + "&" + "${params}";
+		var url = "<%=cp %>/bbs/updated.action" + params;
+		
+		location.replace(url);
+	}
+	
+	function deleteData() {
+		var params = "?num=" + ${dto.num} + "&" + "${params}";
+		var url = "<%=cp %>/bbs/deleted.action" + params;
+		
+		location.replace(url);
+	}
+
+</script>
+
 </head>
 <body>
 
@@ -73,9 +91,8 @@
 	<div id="bbsArticle_footer">
 		
 		<div id=leftFooter>
-			<input type="hidden" name="mode" value="update">
-		<input type="button" value=" 수정 " class="btn2" onclick="<%=cp %>/bbs/created.action"/>
-		<input type="button" value=" 삭제 " class="btn2" onclick="<%=cp %>/bbs/delete.action?num=${dto.num}"/>
+		<input type="button" value=" 수정 " class="btn2" onclick="updateData();"/>
+		<input type="button" value=" 삭제 " class="btn2" onclick="deleteData();"/>
 		</div>
 		
 		<div id="rightFooter">

@@ -132,7 +132,7 @@
 			<dl>
 				<dt> 내&nbsp;&nbsp;&nbsp;&nbsp;용 </dt>
 				<dd>
-				<textarea rows="12" cols="63" name="content" class="boxTA" style="resize: none; background-color: #ffffff">${dto.content}</textarea>
+				<textarea rows="12" cols="60" name="content" class="boxTA" style="resize: none; background-color: #ffffff">${dto.content}</textarea>
 				</dd>
 			</dl>
 		</div>
@@ -141,27 +141,32 @@
 			<dl>
 				<dt> 패스워드 </dt>
 				<dd>
-				<input type="password" name="pwd" size="35" maxlength="7" class="boxTF"
-					 value="${dto.pwd}"/>&nbsp;(게시물 수정 및 삭제 시 필요)
+				<input type="password" name="pwd" size="30" maxlength="7" class="boxTF"
+					 value="${dto.pwd}"/>&nbsp;(게시물 수정, 삭제 시 필요)
 				</dd>
 			</dl>
 		</div>		
 	</div>
 	
 	<div id="bbsCreated_footer">
-	
-	<!-- 수정을 위해 num,pageNum을 넘겨준다. -->
-	<c:if test="${mode=='update' }">
-		<input type="hidden" name="num" value="${dto.num}">
-	</c:if>
-	<input type="hidden" name="pageNum" value="${dto.pageNum}">
-	
-	<!-- 해당 페이지에 insert하기 위해 들어온건지, update하기 위해 들어온건지 구분해 코드를 실행하기 위해 mode를 넘겨준다. -->
-	<input type="hidden" name="mode" value="${mode}">
-	
+	<!-- mode가 insert일 경우 -->
+	<c:if test="${mode=='insert' }">
 	<input type="button" value=" 등록하기 " class="btn2" onclick="sendIt()">
 	<input type="reset" value=" 다시입력 " class="btn2" onclick="document.myForm.subject.focus();">
 	<input type="button" value=" 작성취소" class="btn2" onclick="javascript: location.href='<%=cp%>/bbs/list.action'">
+	</c:if>
+	
+	<!-- mode가 update일 경우의 버튼 디자인 -->
+	<!-- 수정할 때 필요한 num을 넘겨준다. -->
+	<c:if test="${mode=='update' }">
+		<input type="hidden" name="num" value="${dto.num}">
+	<input type="button" value=" 수정하기 " class="btn2" onclick="sendIt()">
+	<input type="button" value=" 수정취소 " class="btn2" onclick="javascript: location.href='<%=cp%>/bbs/list.action?pageNum=${pageNum }'">
+	</c:if>
+	
+	<input type="hidden" name="pageNum" value="${dto.pageNum}">
+	<!-- 해당 페이지에 insert하기 위해 들어온건지, update하기 위해 들어온건지 구분해 코드를 실행하기 위해 mode를 넘겨준다. -->
+	<input type="hidden" name="mode" value="${mode}">
 	</div>
 	
 	</form>

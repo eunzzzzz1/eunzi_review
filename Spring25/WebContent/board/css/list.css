@@ -1,5 +1,11 @@
 @CHARSET "UTF-8";
 
+.body{
+	
+	font-style: '나눔스퀘어라운드OTF Light';
+	
+}
+
 #bbsList {
 	width:690px;
 	margin:30px auto;

@@ -42,7 +42,7 @@
 		</div>
 		
 		<div id="rightHeader">
-			<input type="button" value=" 글 올리기 " class="btn2" onclick="javascript: location.href='<%=cp%>/bbs/created.action';/">
+			<input type="button" value=" 글 올리기 " class="btn2" onclick="javascript: location.href='<%=cp%>/bbs/created.action';"/>
 		</div>
 	</div>
 	

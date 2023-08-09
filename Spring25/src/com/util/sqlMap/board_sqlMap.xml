@@ -70,6 +70,22 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		update board set hitCount=hitCount+1 where num=#num#
 	</update>
 	
+	<!-- update(수정) 쿼리 -->
+	<update id="updateData" parameterClass="dto">
+		update board
+		set
+		name=#name#, pwd=#pwd#, email=#email#, subject=#subject#, content=#content#
+		where
+		num=#num#
+	</update>
+	
+	<!-- 데이터 삭제 쿼리 -->
+	<delete id="deleteData" parameterClass="int">
+		delete board where num=#num#
+	</delete>
+	
+	
+	
 	
 
 </sqlMap>

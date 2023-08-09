@@ -263,6 +263,56 @@ public class BoardController {
 		return "board/article";
 	}
 	
+	@RequestMapping(value="/bbs/updated.action", method= {RequestMethod.GET})
+	public String updateForm(HttpServletRequest req) throws Exception {
+		/**-----------------------------------------------------------------
+		 * 수정 기능
+		 * -----------------------------------------------------------------
+		 * 수정 창을 띄울 때는 get방식으로 데이터가 넘어올 것이고,
+		 * 	=> updateForm
+		 * 실제로 DB에 update를 처리할 때는 Post방식으로 데이터가 넘어올 것.
+		 * -----------------------------------------------------------------
+		 */
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String pageNum = req.getParameter("pageNum");
+		
+		BoardCommand dto = (BoardCommand)dao.getReadData("bbs.readData",num);
+		
+		req.setAttribute("mode", "update");
+			//created.jsp에 "update" 값을 가진 mode를 넘길 것 -> created.jsp를 수정창으로 쓸 것
+			//created.jsp javaScript에서 mode에 따라 "submit"버튼을 누르면 이동할 경로를 나눠둠.
+		req.setAttribute("dto", dto);
+		req.setAttribute("pageNum", pageNum);
+		
+		return "board/created";
+	}
+	
+	@RequestMapping(value="/bbs/updated.action", method= {RequestMethod.POST})
+	public String updateSubmit(BoardCommand command, HttpServletRequest req) throws Exception {
+		
+		// 사용자가 Form에 입력한 데이터들이 매개변수 command에 알아서 들어온다.
+		// <?> created.jsp에서 hidden으로 넘겨준 num,PageNum을 따로 command에 set 안해줘도 넘어가네..?
+		// ㄴ Form 안에 요소 name을 num, pageNum으로 해서 지정해줬으니까... 당연함
+		dao.updateData("bbs.updateData", command);
+		
+		return "redirect:/bbs/list.action?pageNum=" + command.getPageNum();
+		
+	}
+	
+	@RequestMapping(value="/bbs/deleted.action", method= {RequestMethod.GET})
+	public String delete(BoardCommand command, HttpServletRequest req) throws Exception {
+		// 삭제할 데이터의 num이 GET방식으로 넘어온다.
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String pageNum = req.getParameter("pageNum");
+		
+		dao.deleteData("bbs.deleteData",num);
+		
+		return "redirect:/bbs/list.action?pageNum=" + command.getPageNum();
+		
+	}
+	
 	
 }
 
