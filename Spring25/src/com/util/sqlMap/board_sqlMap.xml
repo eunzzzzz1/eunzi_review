@@ -32,5 +32,44 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		) data)
 		<![CDATA[where rnum>=#start# and rnum<=#end#]]>
 	</select>
+	
+	<!-- 글 하나 읽어오기 쿼리 -->
+	<select id="readData" resultClass="dto" parameterClass="int">
+		select num, name, pwd, email, subject, content, ipAddr, hitCount, created from board where num=#num#
+	</select>
+	
+	<!-- 이전글 읽어오기 쿼리 -->
+	
+	<select id="preReadData" resultClass="dto" parameterClass="map">
+		select rownum, data.* from
+		(select num, subject from board
+			where
+			($searchKey$ like '%' || #searchValue# || '%')
+			and
+	<![CDATA[(num>#num#) ]]>
+			order by num asc) data
+			where
+			rownum=1
+	</select>
+	
+	<!-- 다음글 읽어오기 쿼리 -->
+	<select id="nextReadData" resultClass="dto" parameterClass="map">
+		select rownum, data.* from
+		(select num, subject from board
+			where
+			($searchKey$ like '%' || #searchValue# || '%')
+			and
+	<![CDATA[(num<#num#) ]]>
+			order by num desc) data
+			where
+			rownum=1
+	</select>	
+	
+	<!-- 조회수 증가 쿼리 -->
+	<update id="updateHitCount" parameterClass="int">
+		update board set hitCount=hitCount+1 where num=#num#
+	</update>
+	
+	
 
 </sqlMap>

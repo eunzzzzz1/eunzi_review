@@ -165,7 +165,105 @@ public class BoardController {
 		return "board/list"; 
 	}
 	
+	@RequestMapping(value="/bbs/article.action", method= {RequestMethod.GET, RequestMethod.POST})
+	public String article(HttpServletRequest req) throws Exception {
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String pageNum = req.getParameter("pageNum");
+		
+		String searchKey = req.getParameter("searchKey");
+		String searchValue = req.getParameter("searchValue");
+		
+		if(searchValue==null) {
+			//검색을 안 한 것
+			searchKey = "subject";
+			searchValue = "";
+		}
+		
+		if(req.getMethod().equalsIgnoreCase("GET")) {
+			searchValue = URLDecoder.decode(searchValue, "UTF-8");
+		}
+		
+		
+		dao.updateData("bbs.updateHitCount", num); // 조회수 증가
+		
+		// num에 해당하는 게시글 읽어오기
+		BoardCommand dto = (BoardCommand)dao.getReadData("bbs.readData",num);
+		
+		// 라인 수 구하기
+		int lineSu = dto.getContent().split("\r\n").length;
+		
+		// \r\n을 <br>로 바꾸어주기
+		dto.setContent(dto.getContent().replaceAll("\r\n", "<br>"));
+		
+		
+		/**
+		 * 이전글, 다음글에 searchKey, searchValue, num 세 개의 값을 넘겨야 함
+		 * 데이터를 넘길 hMap 생성
+		 */
 
+		Map<String, Object> hMap = new HashMap<>();
+		
+		hMap.put("searchKey", searchKey);
+		hMap.put("searchValue", searchValue);
+		hMap.put("num", num);
+		
+		
+		/**
+		 * 이전글, 다음글
+		 */
+		
+		BoardCommand pre = (BoardCommand)dao.getReadData("bbs.preReadData",hMap);
+		int preNum = 0;
+		String preSubject = null;
+	
+		
+		if(pre!=null) { //이전글, 다음글 데이터가 있을 때만 코드를 실행한다.
+			preNum = pre.getNum();
+			preSubject = pre.getSubject();
+			System.out.println("[이전글]" + preSubject);
+		}
+		
+		BoardCommand next = (BoardCommand)dao.getReadData("bbs.nextReadData",hMap);
+		int nextNum = 0;
+		String nextSubject = null;
+		
+		if(next!=null) {
+			nextNum = next.getNum();
+			nextSubject = next.getSubject();
+			System.out.println("[다음글]" +nextSubject);
+		}
+		
+		/**
+		 * 주소 처리
+		 */
+		
+		String params = "pageNum=" + pageNum;
+		if(!searchValue.equals("")) {
+			// 검색을 한 경우에는 검색값도 함께 넘겨준다.
+			searchValue = URLEncoder.encode(searchValue, "UTF-8");
+			params += "&searchKey=" + searchKey + "&searchValue=" + searchValue;
+		}
+		
+		
+		/**-------------------------------
+		 * article.jsp에 데이터 넘기기
+		 * -------------------------------
+		 */
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("preNum", preNum);
+		req.setAttribute("preSubject", preSubject);
+		req.setAttribute("nextNum", nextNum);
+		req.setAttribute("nextSubject", nextSubject);
+		req.setAttribute("params", params);
+		req.setAttribute("pageNum", pageNum);
+		req.setAttribute("lineSu", lineSu);
+		
+		return "board/article";
+	}
+	
+	
 }
 
 

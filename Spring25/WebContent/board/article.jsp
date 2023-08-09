@@ -20,40 +20,66 @@
 
 	<div id="bbsArticle">
 		<div id="bbsArticle_header">
-			게시물 제목
+			${dto.subject }
 		</div>
 		<div class="bbsArticle_bottomLine">
 			<dl>
-				<dt> 작성자 </dt> <dd> 김은지 </dd>
-				<dt> 줄 수 </dt><dd> 10 </dd>
+				<dt> 작성자 </dt>
+					<dd>
+					${dto.name }
+					<c:if test="${!empty dto.email }">
+					&nbsp;(<a href="mailto:${dto.email }">${dto.email }</a>)
+					</c:if>
+					</dd>
+				<dt> 줄 수 </dt><dd> ${lineSu } </dd>
 			</dl>
 		</div>
 		
 		<div class="bbsArticle_bottomLine">
 			<dl>
-				<dt> 등록일 </dt> <dd> 2023-07-06 </dd>
-				<dt> 조회수 </dt><dd> 10 </dd>
+				<dt> 등록일 </dt> <dd> ${dto.created } </dd>
+				<dt> 조회수 </dt><dd> ${dto.hitCount } </dd>
 			</dl>
 		</div>
 		
 		<div id="bbsArticle_content">
 			<table width="600" border="0">
-				<tr><td style="padding: 20px 80px 20px 62px" valign="top" height="200"></td></tr>
+				<tr><td style="padding: 20px 80px 20px 62px" valign="top" height="200">${dto.content }</td></tr>
 			</table>
 		</div>
 	</div>
 	<div class="bbsArticle_noLine" style="text-align: right">
-		From : 아이피
+		From : ${dto.ipAddr }
 	</div>
+	<div class="bbsArticle_bottomLine">
+	이전글&nbsp;&nbsp;&nbsp;
+	<c:if test="${empty preSubject }">
+		이전 글이 없습니다.
+	</c:if>
+	<c:if test="${!empty preSubject }">
+		<a href="<%=cp %>/bbs/article.action?${params}&num=${preNum }">${preSubject }</a>
+	</c:if>
+	</div>
+	<div class="bbsArticle_noLine">
+	다음글&nbsp;&nbsp;&nbsp;
+	<c:if test="${empty nextSubject }">
+		다음 글이 없습니다.
+	</c:if>
+	<c:if test="${!empty nextSubject }">
+		<a href="<%=cp %>/bbs/article.action?${params}&num=${nextNum }">${nextSubject }</a>
+	</c:if>
+	</div>
+	
 	<div id="bbsArticle_footer">
 		
 		<div id=leftFooter>
-		<input type="button" value=" 수정 " class="btn2" onclick=""/>
-		<input type="button" value=" 삭제 " class="btn2" onclick=""/>
+			<input type="hidden" name="mode" value="update">
+		<input type="button" value=" 수정 " class="btn2" onclick="<%=cp %>/bbs/created.action"/>
+		<input type="button" value=" 삭제 " class="btn2" onclick="<%=cp %>/bbs/delete.action?num=${dto.num}"/>
 		</div>
 		
 		<div id="rightFooter">
-		<input type="button" value=" 리스트 " class="btn2" onclick=""/>
+		<input type="button" value=" 리스트 " class="btn2" onclick="location.href='<%=cp %>/bbs/list.action'"/>
 		</div>
 		
 	</div>
