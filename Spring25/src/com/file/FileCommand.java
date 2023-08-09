@@ -1,6 +1,5 @@
 package com.file;
 
-import org.springframework.web.multipart.MultipartFile;
 
 public class FileCommand {
 
@@ -13,7 +12,7 @@ public class FileCommand {
 	private int pageNum;
 	private int listNum;
 	
-	private String mode;
+	private String downloadUrl;
 	
 	
 	public int getNum() {
@@ -52,11 +51,12 @@ public class FileCommand {
 	public void setListNum(int listNum) {
 		this.listNum = listNum;
 	}
-	public String getMode() {
-		return mode;
+
+	public String getDownloadUrl() {
+		return downloadUrl;
 	}
-	public void setMode(String mode) {
-		this.mode = mode;
+	public void setDownloadUrl(String downloadUrl) {
+		this.downloadUrl = downloadUrl;
 	}
 
 	

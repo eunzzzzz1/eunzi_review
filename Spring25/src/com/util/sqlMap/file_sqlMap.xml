@@ -32,6 +32,16 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			data)
 	<![CDATA[where rnum>=#start# and rnum<=#end#]]>
 	</select>
+	
+	<!-- 데이터 한 개 읽기 -->
+	<select id="readData" parameterClass="int" resultClass="fileDTO">
+		select num, subject, originalFileName, saveFileName from fileTest where num = #num#
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="deleteData" parameterClass="int">
+		delete fileTest where num=#num#
+	</delete>
 
 
 </sqlMap>

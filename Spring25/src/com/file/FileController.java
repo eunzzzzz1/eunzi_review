@@ -2,6 +2,7 @@ package com.file;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.bbs.BoardCommand;
 import com.util.FileManager;
 import com.util.MyUtil;
 import com.util.dao.CommonDAO;
@@ -58,14 +59,18 @@ public class FileController {
 		List<Object> lists = (List<Object>)dao.getListData("fileTest.listData", hMap);
 		Iterator<Object> it = lists.iterator();
 		
+		String cp = req.getContextPath();
+		
 		int listNum, n=0;
 		
 		int dataCount = dao.getIntValue("fileTest.dataCount");
 		while(it.hasNext()) {
 			
 			FileCommand dto = (FileCommand)it.next();
-			listNum = dataCount - (start - n + 1);
+			listNum = dataCount - (start - 1 + n);
 			dto.setListNum(listNum);
+			
+			dto.setDownloadUrl( cp + "/fileTest/download.action?num=" + dto.getNum());
 			n++;
 		}
 		
@@ -77,9 +82,8 @@ public class FileController {
 			totalPage = totalPage - 1;
 		}
 		
-		String cp = req.getContextPath();
-		String listUrl = cp + "/fileTest/list.action";
 		
+		String listUrl = cp + "/fileTest/list.action";
 		String pageIndexList = myUtil.pageIndexList(currentPage, totalPage, listUrl);
 		
 		
@@ -94,7 +98,7 @@ public class FileController {
 	
 	
 	@RequestMapping(value="/fileTest/upload.action", method= {RequestMethod.GET})
-	public String uploadForm(FileCommand command, HttpSession session) throws Exception {
+	public String uploadForm() throws Exception {
 		
 			return "file/write";
 
@@ -131,12 +135,12 @@ public class FileController {
 		String root = session.getServletContext().getRealPath("/");
 		String path = root + "pds" + File.separator + "saveSpringFile";
 		
-		File file = new File(path);
-		
-		if(!file.exists()) {
-			file.mkdirs();
-			// 경로가 실제로 존재하지 않으면 만든다.
-		}
+//		File file = new File(path);
+//		
+//		if(!file.exists()) {
+//			file.mkdirs();
+//			// 경로가 실제로 존재하지 않으면 만든다.
+//		} 여기서는 이게 필요없다.
 		
 		MultipartFile mpFile = req.getFile("fileUpload");
 		InputStream is = mpFile.getInputStream();
@@ -152,6 +156,7 @@ public class FileController {
 		 * 2. maxNum을 DAO를 통해 구하고, num도 command에 세팅하기
 		 * 		subject는 command에 딸려왔을 것
 		 * 2. DAO를 이용해 DB에 기재하기
+		 * ----------------------------------------------------------------
 		 */
 		
 		command.setOriginalFileName(originalFileName);
@@ -161,6 +166,67 @@ public class FileController {
 		command.setNum(num);
 		
 		dao.insertData("fileTest.uploadData", command);
+		
+		return "redirect:/fileTest/list.action";
+	}
+	
+	@RequestMapping(value="/fileTest/download.action", method= {RequestMethod.GET})
+	public void download(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws Exception {
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "pds" + File.separator + "saveSpringFile";
+		
+		// 데이터 한 개 읽어오는 쿼리 사용
+		
+		
+		FileCommand command = (FileCommand)dao.getReadData("fileTest.readData",num);
+		
+		String saveFileName = command.getSaveFileName();
+		String originalFileName = command.getOriginalFileName();
+		
+		boolean flag = FileManager.doFileDownload(resp, saveFileName, originalFileName, path);
+		
+		if(!flag) {
+			resp.setContentType("text/html; charset=UTF-8");
+			
+			PrintWriter out = resp.getWriter();
+			out.print("<script type='text/javascript'>");
+			out.print("alert('파일 다운로드에 실패하셨습니다.')");
+			out.print("history.back()");
+			out.print("</script>");
+		}
+		
+		
+	}
+	
+	@RequestMapping(value="/fileTest/delete.action", method= {RequestMethod.GET})
+	public String delete(HttpServletRequest req, HttpSession session) throws Exception {
+		
+		/**
+		 * 1. 파일 삭제
+		 * 2. DB 삭제
+		 */
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		
+		//파일 삭제하기
+		
+
+		FileCommand command = (FileCommand)dao.getReadData("fileTest.readData",num);
+		
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "pds" + File.separator + "saveSpringFile";
+		
+		String fileName = command.getSaveFileName();
+		
+		FileManager.doFileDelete(fileName, path);
+		
+		
+		// DB 삭제하기
+		dao.deleteData("fileTest.deleteData",num);
+		
 		
 		return "redirect:/fileTest/list.action";
 	}

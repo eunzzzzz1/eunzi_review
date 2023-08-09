@@ -166,7 +166,7 @@ public class FileManager {
 			
 			// bis에 있는 내용을 읽어내고 byte에 있는 내용을 0부터 4096까지 읽는다.
 			// 데이터가 없을 때까지 반복
-			while((data=bis.read())!=-1) {
+			while((data=bis.read(bytes))!=-1) {
 				out.write(bytes,0,data);
 			}
 				

@@ -22,31 +22,31 @@
 
 <tr align="center">
 	<td style="border-bottom: 1px solid #000000;">번호</td>
-	<td style="border-bottom: 1px solid #000000; width: 150px;">제목</td>
-	<td style="border-bottom: 1px solid #000000; width: 200px;">파일명</td>
+	<td style="border-bottom: 1px solid #000000; width: 300px;">제목</td>
+	<td style="border-bottom: 1px solid #000000; width: 300px;">파일명</td>
 	<td style="border-bottom: 1px solid #000000;">삭제</td>
 </tr>
 <c:forEach var="dto" items="${lists }">
-<tr>
+<tr align="center">
 	<td align="center">${dto.listNum }</td>
 	<td width="150">${dto.subject }</td>
-	<td width="200"><a href="">${dto.originalFileName }</a></td>
-	<td align="center"><a href="">삭제하기</a></td>
+	<td width="200"><a href="${dto.downloadUrl }">${dto.originalFileName }</a></td>
+	<td align="center"><a href="<%=cp %>/fileTest/delete.action?num=${dto.num }">삭제하기</a></td>
 </tr>
 </c:forEach> 
 
 </table>
 
-<table>
+</td></tr>
+</table>
+
+<table align="center">
 	<c:if test="${dataCount!=0 }">
 	<tr><td> ${pageIndexList } </td></tr>
 	</c:if>
 	<c:if test="${dataCount==0 }">
 	<tr><td> 등록된 데이터가 없습니다. </td></tr>
 	</c:if>
-</table>
-
-</td></tr>
 </table>
 
 
