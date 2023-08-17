@@ -60,7 +60,13 @@
 		</props>
 	</property>
 </bean>
- 
+
+<!-- AbstractController 복습하기 -->
+
+<!-- beanNameUrlHandlerMapping 이용해서 매핑하기 -->
+<bean id="beanNameUrlMapping"
+	class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+<bean name="/review/abstract_review.action" class="com.review.abstractcontroller.ReviewAbstractController"/>
  
  
  
