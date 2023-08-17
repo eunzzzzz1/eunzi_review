@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<form action="<%=cp %>/test1/login.action" method="post">
+<form action="<%=cp %>/review/login.action" method="post">
 
-아이디 : <input type="text" name="userId">
-비밀번호 : <input type="password" name="userPwd">
-로그인타입 : <select name="loginType">
-	<c:forEach var="type" items="${loginTypes }">
+아이디 : <input type="text" name="userId"> <br>
+비밀번호 : <input type="password" name="userPwd"> <br>
+로그인타입 : <select name="userType">
+	<c:forEach var="type" items="${userTypes }">
 		<option value="${type }">${type }</option>
 	</c:forEach>
 

@@ -12,8 +12,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import com.test1.Authenticator;
-import com.test1.LoginCommand;
 
 public class LoginController extends SimpleFormController{
 
@@ -40,13 +38,13 @@ public class LoginController extends SimpleFormController{
 		 * View에 띄울 데이터들을 미리 세팅해둔다.
 		 */
 		
-		List<String> loginTypes = new ArrayList<>();
-		loginTypes.add("일반회원");
-		loginTypes.add("특별회원");
-		loginTypes.add("기업회원");
+		List<String> userTypes = new ArrayList<>();
+		userTypes.add("일반회원");
+		userTypes.add("특별회원");
+		userTypes.add("기업회원");
 		
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		map.put("loginTypes", loginTypes);
+		map.put("userTypes", userTypes);
 		
 		return map;
 	}
@@ -79,7 +77,7 @@ public class LoginController extends SimpleFormController{
 			
 			String message = "id: " + login.getUserId();
 			message += ", Pwd: " + login.getUserPwd();
-			message += ", type: " + login.getLoginType();
+			message += ", type: " + login.getUserType();
 			 
 			request.setAttribute("message", message);
 			/**

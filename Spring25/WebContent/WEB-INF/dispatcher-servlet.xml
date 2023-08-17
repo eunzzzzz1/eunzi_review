@@ -24,8 +24,8 @@
 </bean>
 
 
-<!-- 어노테이션을 사용할 패키지 설정하기 -->
-<context:component-scan base-package="*"></context:component-scan>
+<!-- 어노테이션을 사용할 패키지 설정하기
+<context:component-scan base-package="*"></context:component-scan> -->
 
 
 <!-- 어노테이션 설정 -->
@@ -36,10 +36,30 @@
 
  
  
+<!-- 사용자 에러 복습하기 -->
+
+<!-- Impl 객체 생성 -->
+<bean name="authen-impl1" class="com.review.error.AuthenticatorImpl"/>
+<bean name="authen-impl2" class="com.review.error.AuthenticatorImpl2"/>
+
+<!-- loginController 객체 생성 -->
+<bean name="loginController" class="com.review.error.LoginController">
+	<property name="authenticator" ref="authen-impl1"/>
+	<property name="commandClass" value="com.review.error.LoginCommand"/>
+	<property name="commandName" value="loginCommand"/>
+	<property name="formView" value="review_loginError/login"/>
+</bean>
  
- 
- 
- 
+<!-- beanSimpleUrlMapping 사용해서 매핑하기 -->
+<bean id="beanSimpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<property name="order" value="1"/>
+	<property name="alwaysUseFullPath" value="true"/>
+	<property name="mappings">
+		<props>
+			<prop key="/review/login.action">loginController</prop>	
+		</props>
+	</property>
+</bean>
  
  
  
