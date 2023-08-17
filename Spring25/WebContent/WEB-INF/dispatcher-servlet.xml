@@ -56,7 +56,9 @@
 	<property name="alwaysUseFullPath" value="true"/>
 	<property name="mappings">
 		<props>
-			<prop key="/review/login.action">loginController</prop>	
+			<prop key="/review/login.action">loginController</prop>
+			<prop key="/review/formok.action">userController</prop>	
+			<prop key="/review/form.action">userFormController</prop>	
 		</props>
 	</property>
 </bean>
@@ -69,9 +71,20 @@
 <bean name="/review/abstract_review.action" class="com.review.abstractcontroller.ReviewAbstractController"/>
  
  
- 
- 
- 
+<!-- AbstractCommandController 복습하기 -->
+<bean name="userController" class="com.review.ab_command_con.UserController"/>
+<bean name="userFormController" class="com.review.ab_command_con.UserFormController"/>
+
+<!-- <bean id="beanSimpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<property name="order" value="1"/>
+	<property name="alwaysUseFullPath" value="true"/>
+	<property name="mappings">
+		<props>
+			<prop key="/review/formok.action">userController</prop>	
+			<prop key="/review/form.action">userFormController</prop>	
+		</props>
+	</property>
+</bean>  -->
  
  
  
