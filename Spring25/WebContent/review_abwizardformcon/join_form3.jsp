@@ -14,16 +14,17 @@
 <form action="<%=cp %>/review/join.action" method="post">
 
 핸드폰번호<br>
-<input type="text" name="userName"><br>
+<input type="text" name="userPhone"><br>
 주소<br>
-<input type="text" name="userIdentifycationNum1"><br><br>
+<input type="text" name="userAddress"><br><br>
 
-약관에 동의하시겠습니까? <input type="checkbox" value="동의완료"><br><br>
+약관에 동의하시겠습니까? <input type="checkbox" name="check" value="on"><br>
 
+<font color="red"><b>${join.message }</b></font><br><br>
 
-<input type="button" value="이전으로" name="_target1">
-<input type="button" value="다음으로" name="_target3">
-<input type="button" value="가입취소" name="_cancel">
+<input type="submit" value="이전으로" name="_target1">
+<input type="submit" value="다음으로" name="_target3">
+<input type="submit" value="가입취소" name="_cancel">
 
 </form>
 

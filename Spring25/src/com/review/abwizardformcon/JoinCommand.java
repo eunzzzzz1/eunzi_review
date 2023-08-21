@@ -13,11 +13,9 @@ public class JoinCommand {
 	private String userIdentifycationNum2; // 주민등록번호 뒷자리
 	
 	//join_form3
-	private String userPhone1; // 핸드폰번호 앞자리
-	private String userPhone2; // 핸드폰번호 중간자리
-	private String userPhone3; // 핸드폰번호 뒷자리	
+	private String userPhone; // 핸드폰번호
 	private String userAddress; // 주소
-	private String check; // 동의여부
+	private boolean check; // 동의여부
 	
 	//error message
 	private String message;
@@ -26,6 +24,12 @@ public class JoinCommand {
 	
 	
 
+	public boolean isCheck() {
+		return check;
+	}
+	public void setCheck(boolean check) {
+		this.check = check;
+	}
 	// Getter, Setter
 	public String getUserId() {
 		return userId;
@@ -63,35 +67,17 @@ public class JoinCommand {
 	public void setUserIdentifycationNum2(String userIdentifycationNum2) {
 		this.userIdentifycationNum2 = userIdentifycationNum2;
 	}
-	public String getUserPhone1() {
-		return userPhone1;
+	public String getUserPhone() {
+		return userPhone;
 	}
-	public void setUserPhone1(String userPhone1) {
-		this.userPhone1 = userPhone1;
-	}
-	public String getUserPhone2() {
-		return userPhone2;
-	}
-	public void setUserPhone2(String userPhone2) {
-		this.userPhone2 = userPhone2;
-	}
-	public String getUserPhone3() {
-		return userPhone3;
-	}
-	public void setUserPhone3(String userPhone3) {
-		this.userPhone3 = userPhone3;
+	public void setUserPhone(String userPhone1) {
+		this.userPhone = userPhone1;
 	}
 	public String getUserAddress() {
 		return userAddress;
 	}
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
-	}
-	public String getCheck() {
-		return check;
-	}
-	public void setCheck(String check) {
-		this.check = check;
 	}
 	public String getMessage() {
 		return message;

@@ -16,17 +16,19 @@
 아이디<br>
 <input type="text" name="userId"><br>
 비밀번호<br>
-<input type="text" name="userPwd"><br>
+<input type="password" name="userPwd"><br>
 가입유형<br>
 <select name="joinType">
 	<c:forEach var="type" items="${types }">
 		<option value="${type }">${type }</option>
 	</c:forEach>
-</select><br><br>
+</select><br>
 
-<input type="button" value="다시입력" name="_target0">
-<input type="button" value="다음으로" name="_target1">
-<input type="button" value="가입취소" name="_cancel">
+<font color="red"><b>${join.message }</b></font><br><br>
+
+<input type="submit" value="다시입력" name="_target0">
+<input type="submit" value="다음으로" name="_target1">
+<input type="submit" value="가입취소" name="_cancel">
 
 </form>
 

@@ -16,11 +16,13 @@
 이름<br>
 <input type="text" name="userName"><br>
 주민번호<br>
-<input type="text" name="userIdentifycationNum1">-<input type="password" name="userIdentifycationNum2"><br><br>
+<input type="text" name="userIdentifycationNum1">-<input type="password" name="userIdentifycationNum2"><br>
 
-<input type="button" value="이전으로" name="_target0">
-<input type="button" value="다음으로" name="_target2">
-<input type="button" value="가입취소" name="_cancel">
+<font color="red"><b>${join.message }</b></font><br><br>
+
+<input type="submit" value="이전으로" name="_target0">
+<input type="submit" value="다음으로" name="_target2">
+<input type="submit" value="가입취소" name="_cancel">
 
 </form>
 

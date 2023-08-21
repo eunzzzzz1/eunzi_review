@@ -58,7 +58,8 @@
 		<props>
 			<prop key="/review/login.action">loginController</prop>
 			<prop key="/review/formok.action">userController</prop>	
-			<prop key="/review/form.action">userFormController</prop>	
+			<prop key="/review/form.action">userFormController</prop>
+			<prop key="/review/join.action">joinController</prop>	
 		</props>
 	</property>
 </bean>
@@ -85,6 +86,29 @@
 		</props>
 	</property>
 </bean>  -->
+
+
+<!-- AbstractWizardFormController 복습하기
+<bean id="beanSimpleUrlMapping2" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<property name="orger" value="1"/>
+	<property name="alwaysUseFullPath"/>
+	<property name="mappings">
+		<props>
+			<prop key="/review/join.action">joinController</prop>
+		</props>
+	</property>
+</bean> -->
+
+<bean name="joinController" class="com.review.abwizardformcon.JoinController">
+	<property name="pages">
+		<list>
+			<value>review_abwizardformcon/join_form1</value>
+			<value>review_abwizardformcon/join_form2</value>
+			<value>review_abwizardformcon/join_form3</value>
+			<value>review_abwizardformcon/join_form4</value>
+		</list>
+	</property>
+</bean>
  
  
  
